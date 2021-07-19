@@ -6,7 +6,11 @@
 	$Notice: (C) Copyright 2021 by n3u2o, ~, All Rights Reserved. $
 	===============================================================  */
 
+#ifdef UNICODE
 #undef UNICODE
+#endif
+
+#define NOSHIT
 
 #include "ConfigureWindows.h"
 #include "WindowsMessageMap.h"
@@ -27,6 +31,7 @@ LRESULT CALLBACK WndProc(
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
+
 int CALLBACK WinMain(
 	_In_		HINSTANCE	hInstance,
 	_In_opt_	HINSTANCE	hPrevInstance,
@@ -54,7 +59,7 @@ int CALLBACK WinMain(
 		0, pClassName,
 		"n3u2o Win32",
 		WS_MINIMIZEBOX | WS_SYSMENU | WS_CAPTION,
-		200, 200, 400, 300,
+		200, 200, 640, 480,
 		nullptr, nullptr, hInstance, nullptr
 	);
 	ShowWindow(hWnd, SW_SHOW);
@@ -67,6 +72,6 @@ int CALLBACK WinMain(
 		DispatchMessage(&msg);
 	}
 
-	return (gmresult == -1) ? -1 : (int)msg.wParam;
+	return gmresult;
 }
 

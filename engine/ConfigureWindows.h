@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef NOSHIT
+
 // target Windows 7 or later
 #define _WIN32_WINNT 0x0601
 #include <sdkddkver.h>
@@ -44,6 +46,8 @@
 #define NOMINMAX
 
 #define STRICT
+
+#endif//NOSHIT
 
 #include <Windows.h>
 
