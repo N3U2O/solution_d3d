@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef NOSHIT
+#ifdef CONFIGURE_NOSHIT
 
 // target Windows 7 or later
 #define _WIN32_WINNT 0x0601
@@ -47,7 +47,7 @@
 
 #define STRICT
 
-#endif//NOSHIT
+#endif//CONFIGURE_NOSHIT
 
 #include <Windows.h>
 

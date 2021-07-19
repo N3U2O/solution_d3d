@@ -10,10 +10,14 @@
 #undef UNICODE
 #endif
 
-#define NOSHIT
+#define CONFIGURE_NOSHIT
 
 #include "ConfigureWindows.h"
 #include "WindowsMessageMap.h"
+
+#include <sstream>
+
+static const auto pTitle = "n3u2o win32";
 
 LRESULT CALLBACK WndProc(
 	HWND   hWnd,
@@ -21,12 +25,34 @@ LRESULT CALLBACK WndProc(
 	WPARAM wParam,
 	LPARAM lParam)
 {
+	static bool windowTextChanged = false;
 	static WindowsMessageMap mm;
 	OutputDebugString(mm(msg, lParam, wParam).c_str());
 	switch (msg)
 	{
 	case WM_CLOSE:
 		PostQuitMessage(69);
+		break;
+	case WM_KEYDOWN:
+		if (wParam == 'F')
+		{
+			SetWindowText(hWnd, "cica");
+			windowTextChanged = true;
+		}
+		break;
+	case WM_KEYUP:
+		if (wParam == 'F')
+		{
+			SetWindowText(hWnd, pTitle);
+		}
+		break;
+	case WM_LBUTTONDOWN:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		std::ostringstream oss;
+		oss << "(" << pt.x << "," << pt.y << ")";
+		SetWindowText(hWnd, oss.str().c_str());
+	}
 		break;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
@@ -56,8 +82,7 @@ int CALLBACK WinMain(
 	RegisterClassEx(&wc);
 
 	HWND hWnd = CreateWindowEx(
-		0, pClassName,
-		"n3u2o Win32",
+		0, pClassName, pTitle,
 		WS_MINIMIZEBOX | WS_SYSMENU | WS_CAPTION,
 		200, 200, 640, 480,
 		nullptr, nullptr, hInstance, nullptr
@@ -72,6 +97,6 @@ int CALLBACK WinMain(
 		DispatchMessage(&msg);
 	}
 
-	return (gmresult == -1)?-1:msg.wParam;
+	return (gmresult == -1) ? -1 : (int)(msg.wParam);
 }
 
