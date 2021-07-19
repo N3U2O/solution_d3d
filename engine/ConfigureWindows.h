@@ -41,6 +41,8 @@
 #define NOIMAGE
 #define NOTAPE
 
+#define NOMINMAX
+
 #define STRICT
 
 #include <Windows.h>

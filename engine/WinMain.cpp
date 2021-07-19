@@ -1,67 +1,71 @@
 /*  ===============================================================
-    $File: WinMain.cpp$
-    $Date: 19/07/2021$
-    $Revision: 0.1$
-    $Creator: n3u2o $
-    $Notice: (C) Copyright 2021 by n3u2o, ~, All Rights Reserved. $
-    ===============================================================  */
+	$File: WinMain.cpp$
+	$Date: 19/07/2021$
+	$Revision: 0.1$
+	$Creator: n3u2o $
+	$Notice: (C) Copyright 2021 by n3u2o, ~, All Rights Reserved. $
+	===============================================================  */
 
-//#include "WindowsConf.h"
 #undef UNICODE
-#include <Windows.h>
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#include "ConfigureWindows.h"
+#include "WindowsMessageMap.h"
 
+LRESULT CALLBACK WndProc(
+	HWND   hWnd,
+	UINT   msg,
+	WPARAM wParam,
+	LPARAM lParam)
+{
+	static WindowsMessageMap mm;
+	OutputDebugString(mm(msg, lParam, wParam).c_str());
+	switch (msg)
+	{
+	case WM_CLOSE:
+		PostQuitMessage(69);
+		break;
+	}
+	return DefWindowProc(hWnd, msg, wParam, lParam);
+}
 int CALLBACK WinMain(
-    HINSTANCE   hInstance,
-    HINSTANCE   hPrevInstance,
-    LPSTR       lpCmdLine,
-    int         nCmdShow
-)
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR     lpCmdLine,
+	int       nCmdShow)
 {
-    const auto pClassName = "N3DClass";
-    WNDCLASSEX wc = {0};
-    wc.cbSize = sizeof( wc );
-    wc.style = CS_OWNDC;
-    wc.lpfnWndProc = DefWindowProc;
-    wc.cbClsExtra = 0;
-    wc.cbWndExtra = 0;
-    wc.hInstance = hInstance;
-    wc.hIcon = nullptr;
-    wc.hIconSm = nullptr;
-    wc.hCursor = nullptr;
-    wc.hbrBackground = nullptr;
-    wc.lpszMenuName = nullptr;
-    wc.lpszClassName = pClassName;
-    RegisterClassEx(&wc);
+	const auto pClassName = "N3DClass";
+	WNDCLASSEX wc = { 0 };
+	wc.cbSize = sizeof(wc);
+	wc.style = CS_OWNDC;
+	wc.lpfnWndProc = WndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = hInstance;
+	wc.hIcon = nullptr;
+	wc.hIconSm = nullptr;
+	wc.hCursor = nullptr;
+	wc.hbrBackground = nullptr;
+	wc.lpszMenuName = nullptr;
+	wc.lpszClassName = pClassName;
+	RegisterClassEx(&wc);
 
-    HWND hWnd = CreateWindowEx(
-        0, pClassName,
-        "n3u2o Win32",
-        WS_MINIMIZEBOX | WS_SYSMENU | WS_CAPTION,
-        200, 200, 400, 300,
-        nullptr, nullptr, hInstance, nullptr
-    );
-    ShowWindow(hWnd, SW_SHOW);
+	HWND hWnd = CreateWindowEx(
+		0, pClassName,
+		"n3u2o Win32",
+		WS_MINIMIZEBOX | WS_SYSMENU | WS_CAPTION,
+		200, 200, 400, 300,
+		nullptr, nullptr, hInstance, nullptr
+	);
+	ShowWindow(hWnd, SW_SHOW);
 
-    MSG msg;
-    BOOL gmresult;
-    while (gmresult = GetMessage(&msg, nullptr, 0, 0) > 0)
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
+	MSG msg;
+	BOOL gmresult;
+	while ((gmresult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
 
-    return 0;
+	return (gmresult == -1) ? -1 : (int)msg.wParam;
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    switch (msg)
-    {
-    case WM_CLOSE:
-        PostQuitMessage(69);
-        break;
-    }
-    return DefWindowProc(hWnd,msg,wParam,lParam);
-}
