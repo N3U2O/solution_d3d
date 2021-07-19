@@ -10,11 +10,14 @@
 #undef UNICODE
 #include <Windows.h>
 
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 int CALLBACK WinMain(
     HINSTANCE   hInstance,
     HINSTANCE   hPrevInstance,
     LPSTR       lpCmdLine,
-    int         nCmdShow )
+    int         nCmdShow
+)
 {
     const auto pClassName = "N3DClass";
     WNDCLASSEX wc = {0};
@@ -30,7 +33,7 @@ int CALLBACK WinMain(
     wc.hbrBackground = nullptr;
     wc.lpszMenuName = nullptr;
     wc.lpszClassName = pClassName;
-    RegisterClassEx( &wc );
+    RegisterClassEx(&wc);
 
     HWND hWnd = CreateWindowEx(
         0, pClassName,
@@ -38,8 +41,27 @@ int CALLBACK WinMain(
         WS_MINIMIZEBOX | WS_SYSMENU | WS_CAPTION,
         200, 200, 400, 300,
         nullptr, nullptr, hInstance, nullptr
-        );
+    );
     ShowWindow(hWnd, SW_SHOW);
-    while (true);
+
+    MSG msg;
+    BOOL gmresult;
+    while (gmresult = GetMessage(&msg, nullptr, 0, 0) > 0)
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
     return 0;
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+    switch (msg)
+    {
+    case WM_CLOSE:
+        PostQuitMessage(69);
+        break;
+    }
+    return DefWindowProc(hWnd,msg,wParam,lParam);
 }
