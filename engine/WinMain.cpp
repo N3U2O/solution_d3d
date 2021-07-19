@@ -72,6 +72,6 @@ int CALLBACK WinMain(
 		DispatchMessage(&msg);
 	}
 
-	return gmresult;
+	return (gmresult == -1)?-1:msg.wParam;
 }
 
