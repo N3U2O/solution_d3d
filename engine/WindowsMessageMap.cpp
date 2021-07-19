@@ -207,5 +207,5 @@ std::string WindowsMessageMap::operator()(DWORD msg, LPARAM lp, WPARAM wp) const
 	}
 	oss << "   LP: 0x" << std::hex << std::setfill('0') << std::setw(8) << lp;
 	oss << "   WP: 0x" << std::hex << std::setfill('0') << std::setw(8) << wp << std::endl;
-	return std::string();
+	return oss.str();
 }
