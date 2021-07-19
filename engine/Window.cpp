@@ -40,14 +40,22 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 }
 
 //Window
-Window::Window(int width=640, int height=480, const char* name="hy") noexcept
+Window::Window(int width, int height, const char* name)
+	:
+	width(width),
+	height(height)
 {
-	RECT wr = {0};
+	//calculate window size from (requested) client area size
+	RECT wr = { 0 };
 	wr.left = 200;
 	wr.right = width + wr.left;
 	wr.top = 200;
 	wr.bottom = height + wr.top;
 	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	//uncomment below line to test exception throw
+	//throw EW_EXCEPT(ERROR_ARENA_TRASHED);
+	//throw std::runtime_error("F&CK!!!");
+	//throw 689362359865;
 	hWnd = CreateWindow(
 		WindowClass::GetName(), name,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
@@ -125,10 +133,10 @@ std::string Window::Exception::TranslateErrorCode(HRESULT hr) noexcept
 	if (nMsgLen == 0)
 	{
 		return "Unindentified error code";
-		std::string errorString = pMsgBuf;
-		LocalFree(pMsgBuf);
-		return errorString;
 	}
+	std::string errorString = pMsgBuf;
+	LocalFree(pMsgBuf);
+	return errorString;
 }
 
 HRESULT Window::Exception::GetErrorCode() const noexcept
