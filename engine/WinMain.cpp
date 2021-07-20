@@ -11,12 +11,11 @@
 #endif
 
 #define CONFIGURE_NOSHIT
-
 #include "ConfigureWindows.h"
+
 //#include "WindowsMessageMap.h"
-#include "Window.h"
-#include "Mouse.h"
-#include <sstream>
+
+#include "App.h"
 
 int CALLBACK WinMain(
 	_In_		HINSTANCE	hInstance,
@@ -27,23 +26,7 @@ int CALLBACK WinMain(
 {
 	try
 	{
-		Window wnd(640, 480, "n3u2o win32 C++ framework");
-
-		MSG msg;
-		BOOL gmresult;
-		int wheelState = 0;
-		while ((gmresult = GetMessage(&msg, nullptr, 0, 0)) > 0)
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-
-		if (gmresult == -1)
-		{
-			return -1;
-		}
-
-		return (int)(msg.wParam);
+		return App().Go();
 	}
 	catch (const EngineException& e)
 	{
