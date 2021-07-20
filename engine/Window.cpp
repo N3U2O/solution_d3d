@@ -57,7 +57,7 @@ Window::Window(int width, int height, const char* name)
 	{
 		throw EW_LAST_EXCEPT();
 	}
-	//uncomment below line to test exception throw
+	//test exception throws
 	//throw EW_EXCEPT(ERROR_ARENA_TRASHED);
 	//throw std::runtime_error("F&CK!!!");
 	//throw 689362359865;
