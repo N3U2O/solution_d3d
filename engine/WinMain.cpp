@@ -15,6 +15,7 @@
 #include "ConfigureWindows.h"
 //#include "WindowsMessageMap.h"
 #include "Window.h"
+#include "Mouse.h"
 #include <sstream>
 
 int CALLBACK WinMain(
@@ -30,6 +31,7 @@ int CALLBACK WinMain(
 
 		MSG msg;
 		BOOL gmresult;
+		int wheelState = 0;
 		while ((gmresult = GetMessage(&msg, nullptr, 0, 0)) > 0)
 		{
 			TranslateMessage(&msg);
