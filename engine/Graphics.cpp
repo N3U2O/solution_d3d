@@ -26,7 +26,7 @@ Graphics::Graphics(HWND hWnd)
 		nullptr,					//use default vga
 		D3D_DRIVER_TYPE_HARDWARE,	//my GPU:)
 		nullptr,					//no SW driver
-		0,							//flags
+		D3D11_CREATE_DEVICE_DEBUG,	//flags
 		nullptr,					//any feature levels
 		0,							//~
 		D3D11_SDK_VERSION,			//
