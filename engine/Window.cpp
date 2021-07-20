@@ -65,9 +65,10 @@ Window::Window(int width, int height, const char* name)
 		WindowClass::GetName(), name,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
-		nullptr, nullptr, WindowClass::GetInstance(), this//points tp created window instance
+		nullptr, nullptr, WindowClass::GetInstance(), this//->created window instance
 	);
-	ShowWindow(hWnd, SW_SHOWDEFAULT);
+	ShowWindow(hWnd, SW_SHOWDEFAULT);//as hidden
+	pGfx = std::make_unique<Graphics>(hWnd);
 }
 
 Window::~Window()
@@ -97,6 +98,12 @@ std::optional<int> Window::ProcessMessages()
 	}
 	return {};
 }
+
+Graphics& Window::Gfx()
+{
+	return *pGfx;
+}
+
 //set uo the pointer to the window instance being created
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
