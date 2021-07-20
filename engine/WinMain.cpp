@@ -33,6 +33,10 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			if (wnd.kbd.KeyIsPressed(VK_SPACE))
+			{
+				MessageBox(nullptr, "Sumthin' Happon!", "Space key was pressed", MB_OK | MB_SERVICE_NOTIFICATION);
+			}
 		}
 
 		if (gmresult == -1)
