@@ -197,6 +197,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="EngineException.cpp" />
+    <ClCompile Include="EngineTimer.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="ConfigureWindows.h" />
     <ClInclude Include="EngineException.h" />
+    <ClInclude Include="EngineTimer.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="resource.h" />

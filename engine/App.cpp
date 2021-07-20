@@ -1,4 +1,6 @@
 #include "App.h"
+#include <sstream>
+#include <iomanip>
 
 App::App()
 	:
@@ -7,24 +9,20 @@ App::App()
 
 int App::Go()
 {
-	MSG msg;
-	BOOL mresult;
-	while ((mresult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+	while (true)
 	{
-		TranslateMessage(&msg);//post aux. WM_CHAR msgs from key...msgs
-		DispatchMessage(&msg);
+		if (const auto ecode = Window::ProcessMessages())
+		{
+			return *ecode;
+		}
 		DoFrame();
 	}
-
-	if (mresult == -1)
-	{
-		throw EW_LAST_EXCEPT();
-	}
-
-	return msg.wParam;
 }
 
-void App::DoFrame()
+void App::DoFrame()//game logic
 {
-	//game logic
+	const float t = timer.Peek();
+	std::ostringstream oss;
+	oss << "Time elapsed: " << std::setprecision(1) << std::fixed << t << "s";
+	wnd.SetTitle(oss.str());
 }
