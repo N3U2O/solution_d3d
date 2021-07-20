@@ -54,8 +54,6 @@ END
 // remains consistent on all systems.
 IDI_ICON1               ICON                    "n3u2o.ico"
 
-IDI_ICON2               ICON                    "icon2.ico"
-
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
