@@ -13,8 +13,9 @@
 #define CONFIGURE_NOSHIT
 
 #include "ConfigureWindows.h"
-	//#include "WindowsMessageMap.h"
+//#include "WindowsMessageMap.h"
 #include "Window.h"
+#include <sstream>
 
 int CALLBACK WinMain(
 	_In_		HINSTANCE	hInstance,
@@ -33,10 +34,6 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
-			if (wnd.kbd.KeyIsPressed(VK_SPACE))
-			{
-				MessageBox(nullptr, "Sumthin' Happon!", "Space key was pressed", MB_OK | MB_SERVICE_NOTIFICATION);
-			}
 		}
 
 		if (gmresult == -1)

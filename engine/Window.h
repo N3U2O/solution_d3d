@@ -40,6 +40,7 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
+	void SetTitle(const std::string& title);
 private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
@@ -55,4 +56,4 @@ private:
 
 //error exception helper macro
 #define EW_EXCEPT( hr ) Window::Exception( __LINE__, __FILE__, hr )
-#define EW_LAST_EXCEPT( hr ) Window::Exception( __LINE__, __FILE__, GetLastError() )
+#define EW_LAST_EXCEPT( ) Window::Exception( __LINE__, __FILE__, GetLastError() )

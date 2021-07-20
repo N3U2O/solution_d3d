@@ -52,7 +52,10 @@ Window::Window(int width, int height, const char* name)
 	wr.right = width + wr.left;
 	wr.top = 200;
 	wr.bottom = height + wr.top;
-	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+	if (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE) == 0)
+	{
+		throw EW_LAST_EXCEPT();
+	}
 	//uncomment below line to test exception throw
 	//throw EW_EXCEPT(ERROR_ARENA_TRASHED);
 	//throw std::runtime_error("F&CK!!!");
@@ -69,6 +72,14 @@ Window::Window(int width, int height, const char* name)
 Window::~Window()
 {
 	DestroyWindow(hWnd);
+}
+
+void Window::SetTitle(const std::string& title)
+{
+	if (SetWindowText(hWnd, title.c_str()) == 0)
+	{
+		throw EW_LAST_EXCEPT();
+	}
 }
 //set uo the pointer to the window instance being created
 LRESULT CALLBACK Window::HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
@@ -119,8 +130,32 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	/*********** MOUSE MESSAGES ***************/
 	case WM_MOUSEMOVE:
 	{
-		POINTS pt = MAKEPOINTS(lParam);
-		mouse.OnMouseMove(pt.x, pt.y);
+		const POINTS pt = MAKEPOINTS(lParam);
+		//in client region -> log move and log enter+capture mouse
+		if (pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
+		{
+			mouse.OnMouseMove(pt.x, pt.y);
+			if (!mouse.IsInWindow())
+			{
+				SetCapture(hWnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		//not in client -> log move / maintain capture if button down
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON))
+			{
+				mouse.OnMouseMove(pt.x, pt.y);
+			}
+			//button up -> release capture / log event for leaving
+			else
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeave();
+			}
+		}
+		break;
 	}
 	case WM_LBUTTONDOWN:
 	{
