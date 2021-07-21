@@ -8,17 +8,17 @@ Graphics::Graphics(HWND hWnd)
 	sd.BufferDesc.Width  = 0;
 	sd.BufferDesc.Height = 0;
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator   = 0;	//default frr
-	sd.BufferDesc.RefreshRate.Denominator = 0;
+	sd.BufferDesc.RefreshRate.Numerator   = 0;		//default frr
+	sd.BufferDesc.RefreshRate.Denominator = 0;		//default frr
 	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	sd.SampleDesc.Count = 1;					//np antialiasing
-	sd.SampleDesc.Quality = 0;					//no antialiasing
+	sd.SampleDesc.Count = 1;						//np antialiasing
+	sd.SampleDesc.Quality = 0;						//no antialiasing
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.BufferCount = 1;							//double buffering
+	sd.BufferCount = 1;								//double buffering
 	sd.OutputWindow = hWnd;
 	sd.Windowed = TRUE;
-	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;	//swap fx
+	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;		//swap fx
 	sd.Flags = 0;
 
 	//create device, front+back buffers, swap chain, rendering context
