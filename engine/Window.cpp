@@ -101,6 +101,10 @@ std::optional<int> Window::ProcessMessages()
 
 Graphics& Window::Gfx()
 {
+	if (!pGfx)
+	{
+		throw EW_NOGFX_EXCEPT();
+	}
 	return *pGfx;
 }
 
