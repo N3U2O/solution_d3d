@@ -197,6 +197,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="EngineException.cpp" />
     <ClCompile Include="EngineTimer.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -209,6 +210,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="ConfigureWindows.h" />
+    <ClInclude Include="dxerr.h" />
     <ClInclude Include="EngineException.h" />
     <ClInclude Include="EngineTimer.h" />
     <ClInclude Include="Graphics.h" />
