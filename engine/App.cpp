@@ -22,10 +22,11 @@ int App::Go()
 void App::DoFrame()//game logic
 {
 	const float t = timer.Peek();
-	std::ostringstream oss;
+/*	std::ostringstream oss;
 	oss << "Time elapsed: " << std::setprecision(1) << std::fixed << t << "s";
-	wnd.SetTitle(oss.str());
+	wnd.SetTitle(oss.str());*/
 	const float c = sin(t) / 2.0f + 5.0f;
 	wnd.Gfx().ClearBuffer(c, c, 1.0f);
+	wnd.Gfx().DrawTestShape();
 	wnd.Gfx().EndFrame();
 }
