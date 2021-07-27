@@ -86,3 +86,28 @@ void Graphics::EndFrame()
 		}
 	}
 }
+
+//Graphics exception stuff
+Graphics::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
+	:
+	Exception(line,file),
+	hr(hr)
+{}
+
+const char* Graphics::HrException::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << GetType() << std::endl
+		<< "[Error Code] 0x" << std::hex << std::uppercase << GetErrorCode()
+		<< std::dec << " (" << (unsigned long)GetErrorCode() << ")" << std::endl
+		<< "[Error String] " << GetErrorString() << std::endl
+		<< "[Description] " << GetErrorDescription() << std::endl
+		<< GetOriginString();
+	whatBuffer = oss.str();
+	return whatBuffer.c_str();
+}
+
+const char* Graphics::HrException::GetType() const noexcept
+{
+	return "Engine Graphics Exception";
+}
