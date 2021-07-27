@@ -2,6 +2,8 @@
 #include "dxerr.h"
 #include <sstream>
 
+namespace wrl = Microsoft::WRL;
+
 #pragma comment(lib,"d3d11.lib")
 
 // graphics exception checking/throwing macros (some with dxgi infos)
@@ -48,45 +50,24 @@ Graphics::Graphics(HWND hWnd)
 	//create device, front+back buffers, swap chain, rendering context
 	GFX_THROW_INFO( D3D11CreateDeviceAndSwapChain(
 		nullptr,					//use default vga
-		D3D_DRIVER_TYPE_HARDWARE,	//my GPU:)
+		D3D_DRIVER_TYPE_HARDWARE,	//use GPU driver
 		nullptr,					//no SW driver
 		swapCreateFlags,			//flags
-		nullptr,					//any feature levels
-		0,							//~
+		nullptr,					//feature levels
+		0,							//any ~
 		D3D11_SDK_VERSION,			//
 		&sd,						//swapchain descriptor structure
 		&pSwap,
 		&pDevice,
-		nullptr,
+		nullptr,					//any feature level
 		&pContext
 	));
 	//gain access to texture subresource in swap chain (back buffer)
-	ID3D11Resource* pBackBuffer = nullptr;
-	GFX_THROW_INFO( pSwap->GetBuffer( 0,__uuidof(ID3D11Resource),reinterpret_cast<void**>(&pBackBuffer) ) );
-	GFX_THROW_INFO( pDevice->CreateRenderTargetView( pBackBuffer,nullptr,&pTarget ) );
-	pBackBuffer->Release();
+	wrl::ComPtr<ID3D11Resource> pBackBuffer;
+	GFX_THROW_INFO( pSwap->GetBuffer(0,__uuidof(ID3D11Resource), &pBackBuffer));
+	GFX_THROW_INFO( pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget));
 }
 
-Graphics::~Graphics()
-{
-	//release subdescriptors (Target View, Rendering Context, Swap Chain) before Device
-	if (pTarget != nullptr)
-	{
-		pTarget->Release();
-	}
-	if (pContext != nullptr)
-	{
-		pContext->Release();
-	}
-	if (pSwap != nullptr)
-	{
-		pSwap->Release();
-	}
-	if (pDevice != nullptr)
-	{
-		pDevice->Release();
-	}
-}
 
 void Graphics::EndFrame()
 {
@@ -110,24 +91,24 @@ void Graphics::EndFrame()
 void Graphics::ClearBuffer( float red,float green,float blue ) noexcept
 {
 	const float color[] = { red,green,blue,1.0f };
-	pContext->ClearRenderTargetView( pTarget,color );
+	pContext->ClearRenderTargetView(pTarget.Get(), color);
 }
 
 
-// Graphics exception stuff
+//Graphics exception stuff
 Graphics::HrException::HrException( int line,const char * file,HRESULT hr,std::vector<std::string> infoMsgs ) noexcept
 	:
-	Exception( line,file ),
-	hr( hr )
+	Exception(line,file),
+	hr(hr)
 {
 	// join all info messages with newlines into single string
-	for( const auto& m : infoMsgs )
+	for (const auto& m : infoMsgs)
 	{
 		info += m;
 		info.push_back( '\n' );
 	}
 	// remove final newline if exists
-	if( !info.empty() )
+	if (!info.empty())
 	{
 		info.pop_back();
 	}
@@ -162,7 +143,7 @@ HRESULT Graphics::HrException::GetErrorCode() const noexcept
 
 std::string Graphics::HrException::GetErrorString() const noexcept
 {
-	return DXGetErrorString( hr );
+	return DXGetErrorString(hr);
 }
 
 std::string Graphics::HrException::GetErrorDescription() const noexcept
@@ -180,30 +161,5 @@ std::string Graphics::HrException::GetErrorInfo() const noexcept
 
 const char* Graphics::DeviceRemovedException::GetType() const noexcept
 {
-	return "Chili Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
-}
-
-//Graphics exception stuff
-Graphics::HrException::HrException(int line, const char* file, HRESULT hr) noexcept
-	:
-	Exception(line,file),
-	hr(hr)
-{}
-
-const char* Graphics::HrException::what() const noexcept
-{
-	std::ostringstream oss;
-	oss << GetType() << std::endl
-		<< "[Error Code] 0x" << std::hex << std::uppercase << GetErrorCode()
-		<< std::dec << " (" << (unsigned long)GetErrorCode() << ")" << std::endl
-		<< "[Error String] " << GetErrorString() << std::endl
-		<< "[Description] " << GetErrorDescription() << std::endl
-		<< GetOriginString();
-	whatBuffer = oss.str();
-	return whatBuffer.c_str();
-}
-
-const char* Graphics::HrException::GetType() const noexcept
-{
-	return "Engine Graphics Exception";
+	return "Engine Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
 }

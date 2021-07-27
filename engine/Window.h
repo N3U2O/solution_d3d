@@ -56,7 +56,7 @@ public:
 	Window& operator=(const Window&) = delete;
 	~Window();
 	void SetTitle(const std::string& title);
-	static std::optional<int> ProcessMessages();
+	static std::optional<int> ProcessMessages() noexcept;
 	Graphics& Gfx();
 private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;

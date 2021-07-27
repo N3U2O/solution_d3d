@@ -45,11 +45,11 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dxerr.cpp">
-      <Filter>DxErr</Filter>
-    </ClCompile>
     <ClCompile Include="DxgiInfoManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dxerr.cpp">
+      <Filter>DxErr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,5 +99,16 @@
     <Image Include="n3u2o.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DXGetErrorDescription.inl">
+      <Filter>DxErr</Filter>
+    </None>
+    <None Include="DXGetErrorString.inl">
+      <Filter>DxErr</Filter>
+    </None>
+    <None Include="DXTrace.inl">
+      <Filter>DxErr</Filter>
+    </None>
   </ItemGroup>
 </Project>

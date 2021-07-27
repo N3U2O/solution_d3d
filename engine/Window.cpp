@@ -295,5 +295,5 @@ std::string Window::HrException::GetErrorDescription() const noexcept
 
 const char* Window::NoGfxException::GetType() const noexcept
 {
-	return "Engine Window Exception (No Graphics)"
+	return "Engine Window Exception (No Graphics)";
 }

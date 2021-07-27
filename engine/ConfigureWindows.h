@@ -1,5 +1,10 @@
 #pragma once
 
+//undefine unicode bullshit and enable tweaks below
+#undef UNICODE
+#undef _UNICODE
+#define CONFIGURE_NOSHIT
+
 #ifdef CONFIGURE_NOSHIT
 
 // target Windows 7 or later
