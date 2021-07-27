@@ -76,7 +76,7 @@ void Graphics::EndFrame()
 	HRESULT hr;
 	if (FAILED(hr = pSwap->Present(1u, 0u)))
 	{
-		if (hr = DXGI_ERROR_DEVICE_REMOVED)
+		if (hr == DXGI_ERROR_DEVICE_REMOVED)
 		{
 			throw GFX_DEVICE_REMOVED_EXCEPT(pDevice->GetDeviceRemovedReason());
 		}

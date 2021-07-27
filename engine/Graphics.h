@@ -6,7 +6,7 @@
 class Graphics
 {
 public:
-	class Excpetion : public EngineException
+	class Exception : public EngineException
 	{
 		using EngineException::EngineException;
 	};
