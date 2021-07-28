@@ -161,9 +161,20 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
 		break;
 	case WM_CHAR:
+	{
 		kbd.OnChar(static_cast<unsigned char>(wParam));
-		if (wParam == VK_ESCAPE) PostQuitMessage(27);
+		/*CONTROL KEYS*/
+		if (wParam == VK_ESCAPE)
+		{
+			PostQuitMessage(27);
+		}
+		if (wParam == VK_SPACE)
+		{
+			OutputDebugString("SPACE PRESSED");
+		}
+		/*END CONTROL KEYS*/
 		break;
+	}
 	/*********** END KEYBOARD MESSAGES ********/
 
 	/*********** MOUSE MESSAGES ***************/
