@@ -4,7 +4,7 @@
 
 App::App()
 	:
-	wnd(640, 480, "n3u2o win32 C++ framework")
+	wnd(1024, 576, "n3u2o win32 C++ framework")
 {}
 
 int App::Go()
