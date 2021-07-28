@@ -1,6 +1,7 @@
 #include "Window.h"
 #include <sstream>
 #include "resource.h"
+#include "WindowsMessageMap.h"
 
 //Window Class
 Window::WindowClass Window::WindowClass::wndClass;
@@ -161,6 +162,7 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		break;
 	case WM_CHAR:
 		kbd.OnChar(static_cast<unsigned char>(wParam));
+		if (wParam == VK_ESCAPE) PostQuitMessage(27);
 		break;
 	/*********** END KEYBOARD MESSAGES ********/
 
@@ -236,6 +238,12 @@ LRESULT Window::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		break;
 	}
 	/*********** END MOUSE MESSAGES ***********/
+	default:
+	{
+		WindowsMessageMap mm;
+		OutputDebugString(mm(msg, lParam, wParam).c_str());
+		break;
+	}
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
