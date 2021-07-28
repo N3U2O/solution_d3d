@@ -1,10 +1,12 @@
 #include "Graphics.h"
 #include "dxerr.h"
 #include <sstream>
+#include <d3dcompiler.h>
 
 namespace wrl = Microsoft::WRL;
 
 #pragma comment(lib,"d3d11.lib")
+#pragma comment(lib,"D3DCompiler.lib")
 
 // graphics exception checking/throwing macros (some with dxgi infos)
 #define GFX_EXCEPT_NOINFO(hr) Graphics::HrException(__LINE__,__FILE__,(hr))
@@ -13,10 +15,12 @@ namespace wrl = Microsoft::WRL;
 #define GFX_EXCEPT(hr) Graphics::HrException(__LINE__,__FILE__,(hr),infoManager.GetMessages())
 #define GFX_THROW_INFO(hrcall) infoManager.Set(); if(FAILED(hr = (hrcall))) throw GFX_EXCEPT(hr)
 #define GFX_DEVICE_REMOVED_EXCEPT(hr) Graphics::DeviceRemovedException(__LINE__,__FILE__,(hr),infoManager.GetMessages())
+#define GFX_THROW_INFO_ONLY(call) infoManager.Set(); (call); {auto v = infoManager.GetMessages(); if(!v.empty()) throw Graphics::InfoException(__LINE__,__FILE__,v);}}
 #else
 #define GFX_EXCEPT(hr) Graphics::HrException( __LINE__,__FILE__,(hr) )
 #define GFX_THROW_INFO(hrcall) GFX_THROW_NOINFO(hrcall)
 #define GFX_DEVICE_REMOVED_EXCEPT(hr) Graphics::DeviceRemovedException( __LINE__,__FILE__,(hr) )
+#define GFX_THROW_INFO_ONLY(call) (call)
 #endif
 
 //Graphics object
@@ -107,8 +111,8 @@ void Graphics::DrawTestShape()
 	//create 2d triangle vb
 	const Vertex vertices[] =
 	{
-		{ 0.0f,  0.5f },
-		{ 0.5f, -0.5f },
+		{  0.0f,  0.5f },
+		{  0.5f, -0.5f },
 		{ -0.5f, -0.5f },
 	};
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
@@ -193,8 +197,44 @@ std::string Graphics::HrException::GetErrorInfo() const noexcept
 	return info;
 }
 
-
 const char* Graphics::DeviceRemovedException::GetType() const noexcept
 {
 	return "Engine Graphics Exception [Device Removed] (DXGI_ERROR_DEVICE_REMOVED)";
+}
+Graphics::InfoException::InfoException(int line, const char* file, std::vector<std::string> infoMsgs) noexcept
+	:
+	Exception(line,file)
+{
+	//join all info messages with newlines into single string
+	for (const auto& m : infoMsgs)
+	{
+		info += m;
+		info.push_back('\n');
+	}
+	//remove final newline if exists
+	if (!info.empty())
+	{
+		info.pop_back();
+	}
+}
+
+const char* Graphics::InfoException::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << GetType() << std::endl
+		<< "\n[Error Info]\n" << GetErrorInfo() << std::endl << std::endl;
+	oss << GetOriginString();
+	whatBuffer = oss.str();
+	return whatBuffer.c_str();
+
+}
+
+const char* Graphics::InfoException::GetType() const noexcept
+{
+	return "Engine Graphics Info Exception";
+}
+
+std::string Graphics::InfoException::GetErrorInfo() const noexcept
+{
+	return info;
 }
