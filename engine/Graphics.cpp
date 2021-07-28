@@ -130,6 +130,11 @@ void Graphics::DrawTestShape()
 	const UINT stride = sizeof(Vertex);
 	const UINT offset = 0u;
 	pContext->IASetVertexBuffers(0u,1u,&pVertexBuffer,&stride,&offset);
+
+	//create vertex shader
+	wrl::ComPtr<ID3D11VertexShader> pVertexShader;
+	wrl::ComPtr<ID3DBlob> pBlob;
+	D3DReadFileToBlob(L"VertexShader.cso", &pBlob);
 	GFX_THROW_INFO_ONLY(pContext->Draw(3u, 0u));
 }
 
