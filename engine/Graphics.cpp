@@ -126,7 +126,7 @@ void Graphics::DrawTestTriangle()
 		{ -0.5f,-0.5f,   0,  0,255,  0 },
 		{ -0.3f, 0.3f,   0,255,  0,  0 },
 		{  0.3f, 0.3f,   0,  0,255,  0 },
-		{  0.0f,-0.8f, 255,  0,  0,  0 },
+		{  0.0f,-1.8f, 255,  0,  0,  0 },
 	};
 	vertices[0].color.g = 255;
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
@@ -218,8 +218,8 @@ void Graphics::DrawTestTriangle()
 
 	// configure viewport
 	D3D11_VIEWPORT vp;
-	vp.Width = 800;
-	vp.Height = 600;
+	vp.Width = 400;
+	vp.Height = 300;
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 	vp.TopLeftX = 0;

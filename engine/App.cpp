@@ -2,7 +2,7 @@
 
 App::App()
 	:
-	wnd( 800,600,"The Donkey Fart Box" )
+	wnd( 1024,576,"n3u2o^D3D" )
 {}
 
 int App::Go()
