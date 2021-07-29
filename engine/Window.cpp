@@ -82,7 +82,7 @@ Window::Window( int width,int height,const char* name )
 	wr.bottom = height + wr.top;
 	if( AdjustWindowRect( &wr,WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,FALSE ) == 0 )
 	{
-		throw CHWND_LAST_EXCEPT();
+		throw EW_LAST_EXCEPT();
 	}
 	// create window & get hWnd
 	hWnd = CreateWindow(
@@ -94,7 +94,7 @@ Window::Window( int width,int height,const char* name )
 	// check for error
 	if( hWnd == nullptr )
 	{
-		throw CHWND_LAST_EXCEPT();
+		throw EW_LAST_EXCEPT();
 	}
 	// newly created windows start off as hidden
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
@@ -111,7 +111,7 @@ void Window::SetTitle( const std::string& title )
 {
 	if( SetWindowText( hWnd,title.c_str() ) == 0 )
 	{
-		throw CHWND_LAST_EXCEPT();
+		throw EW_LAST_EXCEPT();
 	}
 }
 
@@ -141,7 +141,7 @@ Graphics& Window::Gfx()
 {
 	if( !pGfx )
 	{
-		throw CHWND_NOGFX_EXCEPT();
+		throw EW_NOGFX_EXCEPT();
 	}
 	return *pGfx;
 }
