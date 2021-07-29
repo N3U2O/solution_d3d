@@ -6,11 +6,11 @@ class App
 {
 public:
 	App();
-	int Go();//frame/msg loop
+	// master frame / message loop
+	int Go();
 private:
-	void DoFrame();//update
+	void DoFrame();
 private:
 	Window wnd;
 	EngineTimer timer;
 };
-

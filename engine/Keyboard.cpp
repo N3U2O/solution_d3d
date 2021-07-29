@@ -1,22 +1,38 @@
+/******************************************************************************************
+*	Engine Direct3D Engine																  *
+*	Copyright 2018 PlanetEngine <http://www.planetEngine.net>								  *
+*																						  *
+*	This file is part of Engine Direct3D Engine.											  *
+*																						  *
+*	Engine Direct3D Engine is free software: you can redistribute it and/or modify		  *
+*	it under the terms of the GNU General Public License as published by				  *
+*	the Free Software Foundation, either version 3 of the License, or					  *
+*	(at your option) any later version.													  *
+*																						  *
+*	The Engine Direct3D Engine is distributed in the hope that it will be useful,		  *
+*	but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
+*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
+*	GNU General Public License for more details.										  *
+*																						  *
+*	You should have received a copy of the GNU General Public License					  *
+*	along with The Engine Direct3D Engine.  If not, see <http://www.gnu.org/licenses/>.    *
+******************************************************************************************/
 #include "Keyboard.h"
 
-bool Keyboard::KeyIsPressed(unsigned char keycode) const noexcept
+bool Keyboard::KeyIsPressed( unsigned char keycode ) const noexcept
 {
 	return keystates[keycode];
 }
 
-Keyboard::Event Keyboard::ReadKey() noexcept
+std::optional<Keyboard::Event> Keyboard::ReadKey() noexcept
 {
-	if (keybuffer.size() > 0u)
+	if( keybuffer.size() > 0u )
 	{
 		Keyboard::Event e = keybuffer.front();
 		keybuffer.pop();
 		return e;
 	}
-	else
-	{
-		return Keyboard::Event();
-	}
+	return {};
 }
 
 bool Keyboard::KeyIsEmpty() const noexcept
@@ -24,18 +40,15 @@ bool Keyboard::KeyIsEmpty() const noexcept
 	return keybuffer.empty();
 }
 
-char Keyboard::ReadChar() noexcept
+std::optional<char> Keyboard::ReadChar() noexcept
 {
-	if (charbuffer.size() > 0u)
+	if( charbuffer.size() > 0u )
 	{
 		unsigned char charcode = charbuffer.front();
 		charbuffer.pop();
 		return charcode;
 	}
-	else
-	{
-		return 0;
-	}
+	return {};
 }
 
 bool Keyboard::CharIsEmpty() const noexcept
@@ -61,37 +74,37 @@ void Keyboard::Flush() noexcept
 
 void Keyboard::EnableAutorepeat() noexcept
 {
-	autoRepeatEnabled = true;
+	autorepeatEnabled = true;
 }
 
 void Keyboard::DisableAutorepeat() noexcept
 {
-	autoRepeatEnabled = false;
+	autorepeatEnabled = false;
 }
 
 bool Keyboard::AutorepeatIsEnabled() const noexcept
 {
-	return autoRepeatEnabled;
+	return autorepeatEnabled;
 }
 
-void Keyboard::OnKeyPressed(unsigned char keycode) noexcept
+void Keyboard::OnKeyPressed( unsigned char keycode ) noexcept
 {
 	keystates[keycode] = true;
-	keybuffer.push(Keyboard::Event(Keyboard::Event::Type::Press, keycode));
-	TrimBuffer(keybuffer);
+	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Press,keycode ) );
+	TrimBuffer( keybuffer );
 }
 
-void Keyboard::OnKeyReleased(unsigned char keycode) noexcept
+void Keyboard::OnKeyReleased( unsigned char keycode ) noexcept
 {
 	keystates[keycode] = false;
-	keybuffer.push(Keyboard::Event(Keyboard::Event::Type::Release, keycode));
-	TrimBuffer(keybuffer);
+	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Release,keycode ) );
+	TrimBuffer( keybuffer );
 }
 
-void Keyboard::OnChar(char character) noexcept
+void Keyboard::OnChar( char character ) noexcept
 {
-	charbuffer.push(character);
-	TrimBuffer(charbuffer);
+	charbuffer.push( character );
+	TrimBuffer( charbuffer );
 }
 
 void Keyboard::ClearState() noexcept
@@ -100,10 +113,11 @@ void Keyboard::ClearState() noexcept
 }
 
 template<typename T>
-void Keyboard::TrimBuffer(std::queue<T>& buffer) noexcept
+void Keyboard::TrimBuffer( std::queue<T>& buffer ) noexcept
 {
-	while (buffer.size() > bufferSize)
+	while( buffer.size() > bufferSize )
 	{
 		buffer.pop();
 	}
 }
+

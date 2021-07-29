@@ -1,5 +1,5 @@
 #pragma once
-#include "ConfigureWindows.h"
+#include "EngineWin.h"
 #include "EngineException.h"
 #include <d3d11.h>
 #include <wrl.h>
@@ -16,7 +16,7 @@ public:
 	class HrException : public Exception
 	{
 	public:
-		HrException(int line, const char* file, HRESULT hr, std::vector<std::string> infoMsgs = {}) noexcept;
+		HrException( int line,const char* file,HRESULT hr,std::vector<std::string> infoMsgs = {} ) noexcept;
 		const char* what() const noexcept override;
 		const char* GetType() const noexcept override;
 		HRESULT GetErrorCode() const noexcept;
@@ -30,7 +30,7 @@ public:
 	class InfoException : public Exception
 	{
 	public:
-		InfoException(int line, const char* file, std::vector<std::string> infoMsgs) noexcept;
+		InfoException( int line,const char* file,std::vector<std::string> infoMsgs ) noexcept;
 		const char* what() const noexcept override;
 		const char* GetType() const noexcept override;
 		std::string GetErrorInfo() const noexcept;
@@ -46,13 +46,13 @@ public:
 		std::string reason;
 	};
 public:
-	Graphics(HWND hWnd);
-	Graphics(const Graphics&) = delete;					//singleton
-	Graphics& operator=(const Graphics&) = delete;		//singleton
+	Graphics( HWND hWnd );
+	Graphics( const Graphics& ) = delete;
+	Graphics& operator=( const Graphics& ) = delete;
 	~Graphics() = default;
 	void EndFrame();
-	void ClearBuffer(float red, float green, float blue) noexcept;
-	void DrawTestShape();
+	void ClearBuffer( float red,float green,float blue ) noexcept;
+	void DrawTestTriangle();
 private:
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;

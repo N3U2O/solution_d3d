@@ -1,45 +1,46 @@
-/*  ===============================================================
-	$File: WinMain.cpp$
-	$Date: 19/07/2021$
-	$Revision: 0.1$
-	$Creator: n3u2o $
-	$Notice: (C) Copyright 2021 by n3u2o, ~, All Rights Reserved. $
-	===============================================================  */
-
-#ifdef UNICODE
-#undef UNICODE
-#endif
-
-#define CONFIGURE_NOSHIT
-#include "ConfigureWindows.h"
-
-//#include "WindowsMessageMap.h"
-
+/******************************************************************************************
+*	Engine Direct3D Engine																  *
+*	Copyright 2018 PlanetEngine <http://www.planetEngine.net>								  *
+*																						  *
+*	This file is part of Engine Direct3D Engine.											  *
+*																						  *
+*	Engine Direct3D Engine is free software: you can redistribute it and/or modify		  *
+*	it under the terms of the GNU General Public License as published by				  *
+*	the Free Software Foundation, either version 3 of the License, or					  *
+*	(at your option) any later version.													  *
+*																						  *
+*	The Engine Direct3D Engine is distributed in the hope that it will be useful,		  *
+*	but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
+*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
+*	GNU General Public License for more details.										  *
+*																						  *
+*	You should have received a copy of the GNU General Public License					  *
+*	along with The Engine Direct3D Engine.  If not, see <http://www.gnu.org/licenses/>.    *
+******************************************************************************************/
 #include "App.h"
 
+
 int CALLBACK WinMain(
-	_In_		HINSTANCE	hInstance,
-	_In_opt_	HINSTANCE	hPrevInstance,
-	_In_		LPSTR		lpCmdLine,
-	_In_		int			nShowCmd
-)
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR     lpCmdLine,
+	int       nCmdShow )
 {
 	try
 	{
-		return App().Go();
+		return App{}.Go();
 	}
-	catch (const EngineException& e)
+	catch( const EngineException& e )
 	{
-		MessageBox(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
+		MessageBox( nullptr,e.what(),e.GetType(),MB_OK | MB_ICONEXCLAMATION );
 	}
-	catch (const std::exception& e)
+	catch( const std::exception& e )
 	{
-		MessageBox(nullptr, e.what(), "Standard Exception", MB_OK | MB_ICONEXCLAMATION);
+		MessageBox( nullptr,e.what(),"Standard Exception",MB_OK | MB_ICONEXCLAMATION );
 	}
-	catch (...)
+	catch( ... )
 	{
-		MessageBox(nullptr, "No details available", "Unknown Exception", MB_OK | MB_ICONEXCLAMATION);
+		MessageBox( nullptr,"No details available","Unknown Exception",MB_OK | MB_ICONEXCLAMATION );
 	}
 	return -1;
 }
-
