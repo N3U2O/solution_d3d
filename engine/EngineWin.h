@@ -17,44 +17,49 @@
 *	You should have received a copy of the GNU General Public License					  *
 *	along with The Engine Direct3D Engine.  If not, see <http://www.gnu.org/licenses/>.    *
 ******************************************************************************************/
-#include "EngineException.h"
-#include <sstream>
+#pragma once
 
+// target Windows 7 or later
+#define _WIN32_WINNT 0x0601
+#include <sdkddkver.h>
+// The following #defines disable a bunch of unused windows stuff. If you 
+// get weird errors when trying to do some windows stuff, try removing some
+// (or all) of these defines (it will increase build time though).
+#define WIN32_LEAN_AND_MEAN
+#define NOGDICAPMASKS
+#define NOSYSMETRICS
+#define NOMENUS
+#define NOICONS
+#define NOSYSCOMMANDS
+#define NORASTEROPS
+#define OEMRESOURCE
+#define NOATOM
+#define NOCLIPBOARD
+#define NOCOLOR
+#define NOCTLMGR
+#define NODRAWTEXT
+#define NOKERNEL
+#define NONLS
+#define NOMEMMGR
+#define NOMETAFILE
+#define NOMINMAX
+#define NOOPENFILE
+#define NOSCROLL
+#define NOSERVICE
+#define NOSOUND
+#define NOTEXTMETRIC
+#define NOWH
+#define NOCOMM
+#define NOKANJI
+#define NOHELP
+#define NOPROFILER
+#define NODEFERWINDOWPOS
+#define NOMCX
+#define NORPC
+#define NOPROXYSTUB
+#define NOIMAGE
+#define NOTAPE
 
-EngineException::EngineException( int line,const char* file ) noexcept
-	:
-	line( line ),
-	file( file )
-{}
+#define STRICT
 
-const char* EngineException::what() const noexcept
-{
-	std::ostringstream oss;
-	oss << GetType() << std::endl
-		<< GetOriginString();
-	whatBuffer = oss.str();
-	return whatBuffer.c_str();
-}
-
-const char* EngineException::GetType() const noexcept
-{
-	return "Engine Exception";
-}
-
-int EngineException::GetLine() const noexcept
-{
-	return line;
-}
-
-const std::string& EngineException::GetFile() const noexcept
-{
-	return file;
-}
-
-std::string EngineException::GetOriginString() const noexcept
-{
-	std::ostringstream oss;
-	oss << "[File] " << file << std::endl
-		<< "[Line] " << line;
-	return oss.str();
-}
+#include <Windows.h>
