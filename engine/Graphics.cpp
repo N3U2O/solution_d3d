@@ -2,8 +2,10 @@
 #include "dxerr.h"
 #include <sstream>
 #include <d3dcompiler.h>
+#include <DirectXMath.h>
 
 namespace wrl = Microsoft::WRL;
+namespace dx = DirectX;
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
@@ -98,7 +100,7 @@ void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 }
 
-void Graphics::DrawTestTriangle(float angle)
+void Graphics::DrawTestTriangle(float angle, float x, float y)
 {
 	HRESULT hr;
 
@@ -174,18 +176,16 @@ void Graphics::DrawTestTriangle(float angle)
 	// create constant buffer for transformation matrix
 	struct ConstantBuffer
 	{
-		struct
-		{
-			float element[4][4];
-		} transformation;
+		dx::XMMATRIX transform;
 	};
 	const ConstantBuffer cb =
 	{
 		{
-			 (3.0f / 4.0f) * std::cos(angle), std::sin(angle), 0.0f, 0.0f,
-			(3.0f / 4.0f) * -std::sin(angle), std::cos(angle), 0.0f, 0.0f,
-										0.0f,            0.0f, 1.0f, 0.0f,
-										0.0f,            0.0f, 0.0f, 1.0f,
+			dx::XMMatrixTranspose(
+				dx::XMMatrixRotationZ(angle) *
+				dx::XMMatrixScaling(3.0f / 4.0f,1.0f,1.0f) *
+				dx::XMMatrixTranslation(x, y, 0.0f)
+			)
 		}
 	};
 	wrl::ComPtr<ID3D11Buffer> pConstantBuffer;
@@ -250,8 +250,8 @@ void Graphics::DrawTestTriangle(float angle)
 
 	// configure viewport
 	D3D11_VIEWPORT vp;
-	vp.Width = 400;
-	vp.Height = 300;
+	vp.Width = 800;
+	vp.Height = 600;
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 	vp.TopLeftX = 0;
