@@ -2,7 +2,7 @@
 #include "dxerr.h"
 #include <sstream>
 #include <d3dcompiler.h>
-#include <DirectXMath.h>
+#include <DirectXMath.h>	//SIMD-optimized math lib
 
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
@@ -128,7 +128,7 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 		{ -0.5f,-0.5f,   0,  0,255,  0 },
 		{ -0.3f, 0.3f,   0,255,  0,  0 },
 		{  0.3f, 0.3f,   0,  0,255,  0 },
-		{  0.0f,-1.8f, 255,  0,  0,  0 },
+		{  0.0f,-0.8f, 255,  0,  0,  0 },
 	};
 	vertices[0].color.g = 255;
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;

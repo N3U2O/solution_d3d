@@ -2,7 +2,7 @@
 
 App::App()
 	:
-	wnd(1024, 576, "n3u2o^D3D")
+	wnd(800, 600, "n3u2o^D3D")
 {}
 
 int App::Go()
