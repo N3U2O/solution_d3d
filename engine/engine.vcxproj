@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="engine.ico" />
+    <Image Include="n3u2odik.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl" />

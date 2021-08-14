@@ -126,12 +126,12 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 	Vertex vertices[] =
 	{//   ?x,?y,?z,   rrr,ggg,bbb
 		{ -h,-h,-h,   255,  0,  0,255 },
-		{  h,-h,-h,     0,255,  0,255 },
-		{ -h, h,-h,     0,  0,255,255 },
-		{  h, h,-h,   255,255,  0,255 },
+		{  h,-h,-h,   255,  0,  0,255 },
+		{ -h, h,-h,   255,  0,255,255 },
+		{  h, h,-h,   255,  0,  0,255 },
 		{ -h,-h, h,   255,  0,255,255 },
 		{  h,-h, h,   255,  0,255,255 },
-		{ -h, h, h,     0, 88,  0,255 },
+		{ -h, h, h,   255,  0,  0,255 },
 		{  h, h, h,   255,255,255,255 },
 	};
 	vertices[0].color.g = 255;
